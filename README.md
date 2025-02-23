@@ -1,47 +1,33 @@
 # Item Management System
 
-A full-stack web application for managing items, built with Spring Boot, Angular, and MariaDB. The application demonstrates a modern microservices architecture with containerized services and Infrastructure as Code (IaC).
-
-## System Architecture
-
-The application consists of three main components:
-
-1. **Frontend (Angular)**
-   - Single Page Application
-   - Bootstrap for responsive design
-   - Express.js server for production deployment
-   - Component-based architecture
-   - TypeScript for type safety
-
-2. **Backend (Spring Boot)**
-   - RESTful API endpoints
-   - JPA/Hibernate for data persistence
-   - MariaDB integration
-   - Containerized deployment
-   - Comprehensive unit tests
-   - Javadoc documentation
-
-3. **Database (MariaDB)**
-   - Persistent data storage
-   - Automatic schema generation
-   - Docker volume for data persistence
-
-4. **Infrastructure as Code**
-   - Helm charts for Kubernetes deployment
-   - Terraform for cloud infrastructure
-   - Automated documentation
-   - Infrastructure version control
+A full-stack web application for managing items, built with Spring Boot, Angular, and MariaDB. The application demonstrates a modern microservices architecture with containerized services.
 
 ## Features
 
-### Item Management
-- View list of items
-- View item details
-- Create new items
-- Update existing items
-- Delete items
+- View, create, update, and delete items
+- RESTful API endpoints with validation
+- Responsive UI with Bootstrap 5
+- Containerized deployment with Docker
+- Comprehensive test coverage:
+  - End-to-end testing with Playwright (Chrome, Firefox, Safari)
+  - JUnit 5 backend tests
+  - Angular component tests
+- Automated CI/CD pipeline with GitHub Actions:
+  - Parallel test execution
+  - Docker container testing
+  - Test artifacts retention
+  - Caching for faster builds
 
-### API Endpoints
+## Tech Stack
+
+- **Frontend**: Angular 17, Bootstrap 5, TypeScript, Express.js
+- **Backend**: Spring Boot 3.2.2, Java 17, JPA/Hibernate
+- **Database**: MariaDB 10.6 (Bitnami Chart)
+- **Testing**: Playwright, JUnit 5, Karma/Jasmine
+- **Infrastructure**: Docker, Docker Compose, Helm, AWS (EKS, VPC, RDS)
+- **CI/CD**: GitHub Actions
+
+## API Endpoints
 
 | Method | Endpoint | Description | Response Codes |
 |--------|----------|-------------|----------------|
@@ -51,72 +37,32 @@ The application consists of three main components:
 | PUT    | /api/items/{id} | Update item | 200 OK, 404 Not Found |
 | DELETE | /api/items/{id} | Delete item | 204 No Content, 404 Not Found |
 
-## Technical Stack
-
-### Backend
-- Java 17
-- Spring Boot 3.2.2
-- Spring Data JPA
-- MariaDB Connector
-- Maven for dependency management
-- JUnit 5 for testing
-- Mockito for mocking
-
-### Frontend
-- Angular 17
-- Bootstrap 5
-- TypeScript
-- Express.js (production server)
-- Node.js
-
-### Infrastructure
-- Docker & Docker Compose
-- Kubernetes (via Helm)
-- Terraform for cloud resources
-- AWS cloud provider
-
 ## Project Structure
 
 ```
 .
-├── item-service/          # Backend service
-│   ├── src/
-│   ├── pom.xml
-│   └── Dockerfile
-├── ui/                    # Frontend application
-│   ├── src/
-│   ├── package.json
-│   └── Dockerfile
-└── iac/                   # Infrastructure as Code
-    ├── helm/              # Kubernetes Helm charts
-    ├── terraform/         # Terraform configurations
-    └── scripts/           # Deployment scripts
+├── item-service/          # Spring Boot backend service
+├── ui/                    # Angular frontend application
+├── e2e/                  # Playwright end-to-end tests
+└── iac/                  # Infrastructure as Code
+    ├── helm/             # Kubernetes Helm charts
+    ├── terraform/        # AWS infrastructure
+    └── scripts/          # Deployment scripts
 ```
 
-## Documentation
-
-### API Documentation
-- Comprehensive Javadoc for backend services
-- REST API endpoint documentation
-- Response status codes and examples
-
-### Infrastructure Documentation
-- Terraform documentation (auto-generated)
-- Helm chart documentation
-- Deployment guides
-
-## Setup and Installation
+## Getting Started
 
 ### Prerequisites
+
 - Docker and Docker Compose
-- Kubernetes cluster
-- Helm 3.x
-- Terraform
-- AWS CLI configured
+- Node.js 18+
+- Java 17 (Temurin distribution)
+- (Optional) Helm 3.x and kubectl for Kubernetes deployment
+- (Optional) Terraform for AWS infrastructure
 
-### Local Development Setup
+### Local Development
 
-1. Start the development environment:
+1. Start the services:
 ```bash
 docker-compose up -d
 ```
@@ -126,42 +72,22 @@ docker-compose up -d
 - Backend API: http://localhost:8080
 - Database: localhost:3306
 
-### Production Deployment
-
-1. Configure cloud infrastructure:
-```bash
-cd iac/terraform
-terraform init
-terraform apply
-```
-
-2. Deploy application:
-```bash
-cd ../scripts
-./deploy.sh
-```
-
 ## Testing
 
 ### E2E Tests
-The project uses Playwright for end-to-end testing of the full application stack:
-
 ```bash
 cd e2e
 npm install
-npm test                    # Run all tests in parallel
-npm run test:ui            # Run tests with UI mode
-npm run test:debug         # Run tests in debug mode
-npm run show-report        # Show HTML test report
+npm test                    # Run all tests
+npm run test:ui            # Run with UI mode
+npm run show-report        # Show test report
 ```
 
-Features:
+Test features:
 - Cross-browser testing (Chrome, Firefox, Safari)
-- Parallel test execution
 - Automatic screenshots on failure
-- Video recording of failed tests
 - HTML test reports
-- Retries for flaky tests
+- Video recording of failed tests
 
 ### Backend Tests
 ```bash
@@ -172,8 +98,67 @@ cd item-service
 ### Frontend Tests
 ```bash
 cd ui
-npm test
+npm run test:ci            # Run tests in CI mode
 ```
+
+## Continuous Integration
+
+The project uses GitHub Actions for CI/CD with three main jobs:
+
+1. **Frontend Tests**:
+   - Runs Angular unit tests
+   - Uses Node.js 18.x
+   - Caches npm dependencies
+
+2. **Backend Tests**:
+   - Runs Java unit tests
+   - Uses JDK 17 (Temurin)
+   - Caches Maven dependencies
+
+3. **E2E Tests**:
+   - Runs after frontend and backend tests pass
+   - Sets up Docker environment
+   - Executes Playwright tests across browsers
+   - Stores test reports and screenshots
+   - Retains artifacts for 30 days
+
+## Production Deployment
+
+### Infrastructure Setup
+
+1. Configure AWS infrastructure:
+```bash
+cd iac/terraform
+terraform init
+terraform apply
+```
+
+### Application Deployment
+
+1. Configure Helm chart values in `iac/helm/item-management/values.yaml`:
+- Update image repositories
+- Configure resource limits
+- Set environment variables
+
+2. Deploy using Helm:
+```bash
+cd iac/scripts
+./deploy.sh
+```
+
+### Kubernetes Resources
+
+The Helm chart deploys:
+- Frontend service (LoadBalancer)
+- Backend service (ClusterIP)
+- MariaDB database (Bitnami chart)
+- Configurable replicas and resources
+- Kubernetes secrets for database credentials
+
+For detailed infrastructure documentation, see:
+- [Infrastructure Guide](iac/README.md)
+- [Helm Chart Reference](iac/helm/item-management/README.md)
+- [Terraform Configuration](iac/terraform/README.md)
 
 ## Contributing
 
@@ -181,8 +166,7 @@ npm test
 2. Create a feature branch
 3. Add tests for new features
 4. Ensure all tests pass
-5. Add appropriate documentation
-6. Create a Pull Request
+5. Create a Pull Request
 
 ## License
 
