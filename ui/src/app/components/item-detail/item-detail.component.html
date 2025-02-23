@@ -1,0 +1,10 @@
+<div class="container" *ngIf="item">
+  <h2>Item Details</h2>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{item?.name}}</h5>
+      <p class="card-text">{{item?.description}}</p>
+    </div>
+  </div>
+  <a routerLink="/items" class="btn btn-primary mt-3">Back to List</a>
+</div> 

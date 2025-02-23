@@ -1,0 +1,17 @@
+<div class="container">
+  <h2>Items</h2>
+  <a routerLink="/items/new" class="btn btn-primary mb-3">Add New Item</a>
+  
+  <div class="row">
+    <div class="col-md-4" *ngFor="let item of items">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">{{item.name}}</h5>
+          <p class="card-text">{{item.description}}</p>
+          <a [routerLink]="['/items', item.id]" class="btn btn-info me-2">View</a>
+          <button (click)="deleteItem(item.id!)" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
