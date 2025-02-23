@@ -1,17 +1,17 @@
 <div class="container">
-  <h2>Create New Item</h2>
+  <h2 id="create-item-title">Create New Item</h2>
   <form (ngSubmit)="onSubmit()" #itemForm="ngForm">
     <div class="mb-3">
-      <label for="name" class="form-label">Name</label>
-      <input type="text" class="form-control" id="name" 
+      <label for="item-name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="item-name" 
              [(ngModel)]="item.name" name="name" required>
     </div>
     <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <textarea class="form-control" id="description" 
+      <label for="item-description" class="form-label">Description</label>
+      <textarea class="form-control" id="item-description" 
                 [(ngModel)]="item.description" name="description"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a routerLink="/items" class="btn btn-secondary">Cancel</a>
+    <button type="submit" id="submit-item" class="btn btn-primary">Create</button>
+    <a id="cancel-item" routerLink="/items" class="btn btn-secondary">Cancel</a>
   </form>
 </div> 

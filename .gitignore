@@ -48,4 +48,11 @@ yarn-error.log*
 
 # System Files
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Playwright
+e2e/node_modules/
+e2e/.auth/
+e2e/test-results/
+e2e/playwright-report/
+e2e/.cache/ 

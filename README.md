@@ -143,6 +143,26 @@ cd ../scripts
 
 ## Testing
 
+### E2E Tests
+The project uses Playwright for end-to-end testing of the full application stack:
+
+```bash
+cd e2e
+npm install
+npm test                    # Run all tests in parallel
+npm run test:ui            # Run tests with UI mode
+npm run test:debug         # Run tests in debug mode
+npm run show-report        # Show HTML test report
+```
+
+Features:
+- Cross-browser testing (Chrome, Firefox, Safari)
+- Parallel test execution
+- Automatic screenshots on failure
+- Video recording of failed tests
+- HTML test reports
+- Retries for flaky tests
+
 ### Backend Tests
 ```bash
 cd item-service
