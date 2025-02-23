@@ -1,6 +1,6 @@
 # Item Management System
 
-A full-stack web application for managing items, built with Spring Boot, Angular, and MariaDB. The application demonstrates a modern microservices architecture with containerized services.
+A full-stack web application for managing items, built with Spring Boot, Angular, and MariaDB. The application demonstrates a modern microservices architecture with containerized services and Infrastructure as Code (IaC).
 
 ## System Architecture
 
@@ -18,11 +18,19 @@ The application consists of three main components:
    - JPA/Hibernate for data persistence
    - MariaDB integration
    - Containerized deployment
+   - Comprehensive unit tests
+   - Javadoc documentation
 
 3. **Database (MariaDB)**
    - Persistent data storage
    - Automatic schema generation
    - Docker volume for data persistence
+
+4. **Infrastructure as Code**
+   - Helm charts for Kubernetes deployment
+   - Terraform for cloud infrastructure
+   - Automated documentation
+   - Infrastructure version control
 
 ## Features
 
@@ -35,13 +43,13 @@ The application consists of three main components:
 
 ### API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET    | /api/items | Get all items |
-| GET    | /api/items/{id} | Get item by ID |
-| POST   | /api/items | Create new item |
-| PUT    | /api/items/{id} | Update item |
-| DELETE | /api/items/{id} | Delete item |
+| Method | Endpoint | Description | Response Codes |
+|--------|----------|-------------|----------------|
+| GET    | /api/items | Get all items | 200 OK |
+| GET    | /api/items/{id} | Get item by ID | 200 OK, 404 Not Found |
+| POST   | /api/items | Create new item | 201 Created |
+| PUT    | /api/items/{id} | Update item | 200 OK, 404 Not Found |
+| DELETE | /api/items/{id} | Delete item | 204 No Content, 404 Not Found |
 
 ## Technical Stack
 
@@ -51,6 +59,8 @@ The application consists of three main components:
 - Spring Data JPA
 - MariaDB Connector
 - Maven for dependency management
+- JUnit 5 for testing
+- Mockito for mocking
 
 ### Frontend
 - Angular 17
@@ -60,134 +70,99 @@ The application consists of three main components:
 - Node.js
 
 ### Infrastructure
-- Docker
-- Docker Compose
-- Docker volumes for persistence
-- Docker networking
+- Docker & Docker Compose
+- Kubernetes (via Helm)
+- Terraform for cloud resources
+- AWS cloud provider
 
 ## Project Structure
 
-### Backend Service (item-service)
 ```
-item-service/
-├── src/main/java/
-│   └── com/example/itemservice/
-│       ├── controller/    # REST endpoints
-│       ├── model/        # Entity classes
-│       ├── repository/   # Data access
-│       └── service/      # Business logic
-├── src/main/resources/
-│   ├── application.properties  # Configuration
-│   └── db/
-│       └── init.sql      # Database initialization
-└── Dockerfile           # Backend container config
+.
+├── item-service/          # Backend service
+│   ├── src/
+│   ├── pom.xml
+│   └── Dockerfile
+├── ui/                    # Frontend application
+│   ├── src/
+│   ├── package.json
+│   └── Dockerfile
+└── iac/                   # Infrastructure as Code
+    ├── helm/              # Kubernetes Helm charts
+    ├── terraform/         # Terraform configurations
+    └── scripts/           # Deployment scripts
 ```
 
-### Frontend Application (ui)
-```
-ui/
-├── src/
-│   ├── app/
-│   │   ├── components/   # Angular components
-│   │   ├── services/     # API services
-│   │   └── models/       # TypeScript interfaces
-│   └── assets/          # Static files
-├── server.js           # Production Express server
-└── Dockerfile         # Frontend container config
-```
+## Documentation
+
+### API Documentation
+- Comprehensive Javadoc for backend services
+- REST API endpoint documentation
+- Response status codes and examples
+
+### Infrastructure Documentation
+- Terraform documentation (auto-generated)
+- Helm chart documentation
+- Deployment guides
 
 ## Setup and Installation
 
 ### Prerequisites
-- Docker
-- Docker Compose
+- Docker and Docker Compose
+- Kubernetes cluster
+- Helm 3.x
+- Terraform
+- AWS CLI configured
 
-### Running the Application
+### Local Development Setup
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd item-management-system
-```
-
-2. Start the application:
+1. Start the development environment:
 ```bash
 docker-compose up -d
 ```
 
-The application will be available at:
+2. Access the applications:
 - Frontend: http://localhost
 - Backend API: http://localhost:8080
 - Database: localhost:3306
 
-### Development Setup
+### Production Deployment
 
-#### Backend
+1. Configure cloud infrastructure:
+```bash
+cd iac/terraform
+terraform init
+terraform apply
+```
+
+2. Deploy application:
+```bash
+cd ../scripts
+./deploy.sh
+```
+
+## Testing
+
+### Backend Tests
 ```bash
 cd item-service
-./mvnw spring-boot:run
+./mvnw test
 ```
 
-#### Frontend
+### Frontend Tests
 ```bash
 cd ui
-npm install
-npm start
+npm test
 ```
-
-## Configuration
-
-### Database Configuration
-```yaml
-# docker-compose.yml
-mariadb:
-  environment:
-    MYSQL_DATABASE: itemdb
-    MYSQL_USER: itemuser
-    MYSQL_PASSWORD: itempass
-```
-
-### Backend Configuration
-```properties
-# application.properties
-spring.datasource.url=jdbc:mariadb://mariadb:3306/itemdb
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-```
-
-## Docker Configuration
-
-### Services
-- **MariaDB**: Database service with health checks
-- **Backend**: Spring Boot application with database dependency
-- **Frontend**: Angular application served by Express
-
-### Networking
-- All services run on a dedicated Docker network
-- Internal service discovery using Docker DNS
-- Port mapping for external access
-
-## Development Guidelines
-
-### Backend Development
-- Follow RESTful API principles
-- Use DTOs for data transfer
-- Implement proper error handling
-- Write unit tests
-
-### Frontend Development
-- Follow Angular best practices
-- Use TypeScript features
-- Implement proper error handling
-- Make components reusable
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+3. Add tests for new features
+4. Ensure all tests pass
+5. Add appropriate documentation
+6. Create a Pull Request
 
 ## License
 

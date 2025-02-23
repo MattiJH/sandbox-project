@@ -1,0 +1,15 @@
+# Chart.yaml defines the chart metadata and dependencies
+apiVersion: v2
+name: item-management
+description: A Helm chart for Item Management System
+
+# The chart type and version information
+type: application
+version: 0.1.0        # Chart version
+appVersion: "1.0.0"   # Application version
+
+# Chart dependencies
+dependencies:
+  - name: mariadb     # MariaDB dependency from Bitnami
+    version: "11.x.x" # Using version 11.x.x of MariaDB chart
+    repository: "https://charts.bitnami.com/bitnami" 

@@ -1,0 +1,51 @@
+# Global settings shared across all resources
+global:
+  environment: production  # Current environment (production/staging/development)
+
+# Backend service configuration
+backend:
+  name: item-service      # Service name
+  image:
+    repository: your-registry/item-service  # Docker image repository
+    tag: latest                            # Docker image tag
+    pullPolicy: Always                     # Image pull policy
+  replicas: 2            # Number of pod replicas
+  service:
+    type: ClusterIP      # Kubernetes service type
+    port: 8080          # Service port
+  resources:            # Resource limits and requests
+    limits:
+      cpu: 1000m        # CPU limit (1 core)
+      memory: 1Gi       # Memory limit
+    requests:
+      cpu: 500m         # CPU request
+      memory: 512Mi     # Memory request
+
+# Frontend configuration
+frontend:
+  name: item-ui         # Service name
+  image:
+    repository: your-registry/item-ui  # Docker image repository
+    tag: latest                       # Docker image tag
+    pullPolicy: Always                # Image pull policy
+  replicas: 2          # Number of pod replicas
+  service:
+    type: LoadBalancer # Kubernetes service type
+    port: 80          # Service port
+  resources:          # Resource limits and requests
+    limits:
+      cpu: 500m       # CPU limit
+      memory: 512Mi   # Memory limit
+    requests:
+      cpu: 200m       # CPU request
+      memory: 256Mi   # Memory request
+
+# MariaDB configuration using Bitnami chart
+mariadb:
+  auth:
+    database: itemdb    # Database name
+    username: itemuser  # Database user
+  primary:
+    persistence:
+      size: 1Gi        # Storage size for database
+  architecture: standalone  # Single instance deployment 
