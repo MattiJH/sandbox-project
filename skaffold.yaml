@@ -24,6 +24,10 @@ build:
 
 
 manifests:
+  hooks:
+    before:
+      - host:
+          command: ["sh", "./scripts/init-k8-cluster.sh"]
   helm:
     releases:
       - name: item-management
