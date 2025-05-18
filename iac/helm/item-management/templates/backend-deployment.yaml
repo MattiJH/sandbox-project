@@ -26,16 +26,16 @@ spec:
             - containerPort: 8080
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mariadb://{{ .Release.Name }}-mariadb/{{ .Values.mariadb.auth.database }}
+              value: {{ .Values.backend.database.url }}
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-mariadb
-                  key: username
+                  name: {{ .Values.backend.database.secretName }}
+                  key: user
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-mariadb
+                  name: {{ .Values.backend.database.secretName }}
                   key: password
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }} 

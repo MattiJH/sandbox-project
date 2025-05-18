@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "item-management-ui:build:production"
+              "buildTarget": "item-management-ui:build:production"
             },
             "development": {
-              "browserTarget": "item-management-ui:build:development"
+              "buildTarget": "item-management-ui:build:development"
             }
           },
           "defaultConfiguration": "development"

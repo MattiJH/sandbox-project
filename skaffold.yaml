@@ -1,0 +1,44 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: item-management
+build:
+  artifacts:
+    - image: itemui
+      context: ui
+      docker:
+        dockerfile: Dockerfile_skaffold
+      sync:
+        infer:
+          - '**/*.ts'
+          - '**/*.html'
+          - '**/*.scss'
+          - '**/*.css'
+    - image: itemservice
+      context: item-service
+      jib:
+        args: 
+        - -Psync
+      sync:
+        auto: true
+
+
+manifests:
+  helm:
+    releases:
+      - name: item-management
+        chartPath: iac/helm/item-management
+        setValueTemplates:
+          frontend.image.repository: "{{.IMAGE_REPO_itemui}}"
+          frontend.image.tag: "{{.IMAGE_TAG_itemui}}"
+          backend.image.repository: "{{.IMAGE_REPO_itemservice}}"
+          backend.image.tag: "{{.IMAGE_TAG_itemservice}}"
+portForward:
+  - resourceType: deployment
+    resourceName: item-ui
+    port: 4200
+    localPort: 4200
+  - resourceType: deployment
+    resourceName: item-service
+    port: 8080
+    localPort: 8080
